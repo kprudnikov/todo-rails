@@ -1,0 +1,81 @@
+
+<!-- <ul ng-repeat="list in lists">
+  <button class="btn btn-danger" ng-click="deleteList(list)"><i class="glyphicon glyphicon-remove"></i></button>
+  <form ng-submit="updateList(list)">
+    <fieldset>
+      <input type="text" name="list[title]" ng-model="list.title" id="list{{list.id}}">
+      <input type="submit" value="Save">
+      <img src="/spinner.gif" alt="" ng-show="list.loading" height="24px">
+    </fieldset>
+  </form>
+
+  <li ng-repeat="task in list.tasks">
+    {{task.title}}
+    <label for="task{{task.id}}">Complete</label>
+    <input type="checkbox" name="task{{task.id}}" id="task{{task.id}}" ng-checked="task.complete">
+  </li>
+</ul> -->
+
+<div class="list" ng-repeat="list in lists">
+  <div class="header bg-primary clearfix">
+    <div class="row">
+
+      <div class="pull-left col-xs-9">
+        <div class="title-container" ng-hide="list.editing" ng-click="list.editing=true">
+          <span class="h3">
+            <i class="glyphicon glyphicon-list" ng-hide="list.loading"></i>
+            <img src="/spinner.gif" alt="" ng-show="list.loading" height="24px">
+          </span>
+          <span class="h3">{{list.title}}</span>
+        </div>
+        <form ng-submit="updateList(list); list.editing=false" ng-show="list.editing">
+          <input type="text" name="list[title]" ng-model="list.title" id="list{{list.id}}" class="form-control">
+        </form>
+      </div>
+      <div class="col-xs-3 pull-right text-right">
+        <div class="row">
+          <button role="button" class="btn btn-lg" ng-click="list.editing ? updateList(list) : ''; toggleEdit(list)"><i class="glyphicon glyphicon-pencil"></i></button>
+          <button role="button" class="btn btn-lg" ng-click="deleteList(list)"><i class="glyphicon glyphicon-trash"></i></button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="well">
+
+    <div class="new-task">
+      <form class="input-group" ng-submit="createTask(list)">
+        <div class="input-group-addon">
+          <i class="glyphicon glyphicon-plus text-success"></i>
+        </div>
+        <input type="text" placeholder="Type here to add task" class="form-control" ng-model="list.newTask">
+        <div class="input-group-btn">
+          <input type="submit" value="Add task" class="btn btn-success">
+        </div>
+      </form>
+    </div>
+
+    <br>
+
+    <ul class="tasks-container">
+      <li ng-repeat="task in list.tasks">
+        <form class="input-group" ng-submit="updateTask(list, task)">
+          <div class="input-group-addon">
+            <input type="checkbox" name="" id="task-{{task.id}}" ng-checked="task.complete" ng-change="updateTask(list, task)" ng-model="task.complete">
+          </div>
+          <p class="form-control" role="button" ng-keyup="handleTaskKeyBoardControls(list, task)" ng-hide="task.editing" ng-click="task.editing=true" tabindex="0">{{task.title}}</p>
+          <input type="text" class="form-control" ng-show="task.editing" ng-model="task.title">
+          <div class="input-group-addon task-controls">
+            <button role="button" type="button" class="btn btn-xs"><i class="glyphicon glyphicon-resize-vertical"></i></button>
+            <button role="button" type="button" class="btn btn-xs" ng-click="toggleEdit(task)"><i class="glyphicon glyphicon-pencil"></i></button>
+            <button role="button" type="button" class="btn btn-xs btn-danger" ng-click="destroyTask(list, task)"><i class="glyphicon glyphicon-trash"></i></button>
+          </div>
+        </form>
+      </li>
+    </ul>
+
+  </div>
+</div>
+
+<button class="btn btn-primary btn-lg center-block" ng-click="createList()"><i class="glyphicon glyphicon-plus"></i> Add Todo list</button>

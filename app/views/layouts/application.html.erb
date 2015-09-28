@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TodoRails</title>
+  <%= stylesheet_link_tag    'application', media: 'all'%>
+  <%= javascript_include_tag 'application' %>
+  <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body ng-app="app">
+
+<div class="fluid-container" style="max-width: 960px; margin: 0 auto">
+
+<%= yield %>
+
+</div>
+</body>
+</html>

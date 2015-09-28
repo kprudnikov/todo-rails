@@ -1,0 +1,15 @@
+[
+  <% @lists.each do |list| %>
+    {
+      title: <%= list.title %>,
+      tasks: [
+        <% list.tasks.each do |task| %>
+          {
+            title: <%= task.title %>,
+            complete: <%= task.complete %>
+          }
+        <%  %>
+      ]
+    }
+  <% end %>
+]
