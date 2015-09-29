@@ -1,26 +1,8 @@
-
-<!-- <ul ng-repeat="list in lists">
-  <button class="btn btn-danger" ng-click="deleteList(list)"><i class="glyphicon glyphicon-remove"></i></button>
-  <form ng-submit="updateList(list)">
-    <fieldset>
-      <input type="text" name="list[title]" ng-model="list.title" id="list{{list.id}}">
-      <input type="submit" value="Save">
-      <img src="/spinner.gif" alt="" ng-show="list.loading" height="24px">
-    </fieldset>
-  </form>
-
-  <li ng-repeat="task in list.tasks">
-    {{task.title}}
-    <label for="task{{task.id}}">Complete</label>
-    <input type="checkbox" name="task{{task.id}}" id="task{{task.id}}" ng-checked="task.complete">
-  </li>
-</ul> -->
-
 <div class="list" ng-repeat="list in lists">
   <div class="header bg-primary clearfix">
     <div class="row">
 
-      <div class="pull-left col-xs-9">
+      <div class="col-xs-12 table-wrapper">
         <div class="title-container" ng-hide="list.editing" ng-click="list.editing=true">
           <span class="h3">
             <i class="glyphicon glyphicon-list" ng-hide="list.loading"></i>
@@ -28,22 +10,20 @@
           </span>
           <span class="h3">{{list.title}}</span>
         </div>
-        <form ng-submit="updateList(list); list.editing=false" ng-show="list.editing">
-          <input type="text" name="list[title]" ng-model="list.title" id="list{{list.id}}" class="form-control">
+        <form ng-submit="updateList(list); list.editing=false" ng-show="list.editing" class="title-edit">
+          <input type="text" name="list[title]" ng-model="list.title" id="list{{list.id}}" class="form-control" placeholder="Type here to add list title">
         </form>
-      </div>
-      <div class="col-xs-3 pull-right text-right">
-        <div class="row">
-          <button role="button" class="btn btn-lg" ng-click="list.editing ? updateList(list) : ''; toggleEdit(list)"><i class="glyphicon glyphicon-pencil"></i></button>
-          <button role="button" class="btn btn-lg" ng-click="deleteList(list)"><i class="glyphicon glyphicon-trash"></i></button>
-        </div>
+          <div style="width: 105px;" class="pull-right text-right">
+            <button role="button" class="btn btn-lg" ng-click="list.editing ? updateList(list) : ''; toggleEdit(list)"><i class="glyphicon glyphicon-pencil"></i></button>
+            <button role="button" class="btn btn-lg" ng-click="deleteList(list)"><i class="glyphicon glyphicon-trash"></i></button>
+          </div>
       </div>
 
     </div>
   </div>
 
   <div class="well">
-
+    <button class="btn btn-link" ng-click="updateAllTasks(list)">Update all</button>
     <div class="new-task">
       <form class="input-group" ng-submit="createTask(list)">
         <div class="input-group-addon">
@@ -59,16 +39,23 @@
     <br>
 
     <ul class="tasks-container">
-      <li ng-repeat="task in list.tasks">
+      <li ng-repeat="task in list.tasks" id="task-{{task.id}}">
+        <!-- {{task.id}} - {{task.priority}} -->
         <form class="input-group" ng-submit="updateTask(list, task)">
           <div class="input-group-addon">
-            <input type="checkbox" name="" id="task-{{task.id}}" ng-checked="task.complete" ng-change="updateTask(list, task)" ng-model="task.complete">
+            <input type="checkbox" name="task-complete" ng-checked="task.complete" ng-change="updateTask(list, task)" ng-model="task.complete">
           </div>
-          <p class="form-control" role="button" ng-keyup="handleTaskKeyBoardControls(list, task)" ng-hide="task.editing" ng-click="task.editing=true" tabindex="0">{{task.title}}</p>
-          <input type="text" class="form-control" ng-show="task.editing" ng-model="task.title">
+          <div style="position: relative">
+            <p class="form-control" role="button" ng-keyup="handleTaskKeyBoardControls(list, task)" ng-hide="task.editing" ng-click="task.editing=true" tabindex="0">{{task.title}}</p>
+            <input type="text" class="form-control" ng-show="task.editing" ng-model="task.title" name="task-title">
+            <img src="/spinner.gif" alt="" class="spinner" ng-show="task.loading">
+          </div>
           <div class="input-group-addon task-controls">
-            <button role="button" type="button" class="btn btn-xs"><i class="glyphicon glyphicon-resize-vertical"></i></button>
-            <button role="button" type="button" class="btn btn-xs" ng-click="toggleEdit(task)"><i class="glyphicon glyphicon-pencil"></i></button>
+            <!-- drag-n-drop sorting to be implemented -->
+            <!-- <button role="button" type="button" class="btn btn-xs"><i class="glyphicon glyphicon-resize-vertical"></i></button> -->
+            <button role="button" type="button" class="btn btn-xs" ng-click="moveTaskOneStep(list, task, 'up'); updateAllTasks(list)"><i class="glyphicon glyphicon-arrow-up"></i></button>
+            <button role="button" type="button" class="btn btn-xs" ng-click="moveTaskOneStep(list, task, 'down'); updateAllTasks(list)"><i class="glyphicon glyphicon-arrow-down"></i></button>
+            <button role="button" type="button" class="btn btn-xs" ng-click="task.editing ? updateTask(list, task) : ''; toggleEdit(task)"><i class="glyphicon glyphicon-pencil"></i></button>
             <button role="button" type="button" class="btn btn-xs btn-danger" ng-click="destroyTask(list, task)"><i class="glyphicon glyphicon-trash"></i></button>
           </div>
         </form>

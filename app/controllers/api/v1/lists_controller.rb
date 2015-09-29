@@ -27,7 +27,6 @@ module Api
         respond_to do |f|
           f.json { render( json: {}, status: :ok )}
         end
-
       end
 
       def update
