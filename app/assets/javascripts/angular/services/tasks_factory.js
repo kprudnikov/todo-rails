@@ -48,7 +48,8 @@ app.factory('tasks', ['$http', '$timeout', '$log', function ($http, $timeout, $l
     }
   };
 
-  tasks.moveTaskOneStep = function (list, task, direction) {
+  tasks.moveTaskOneStep = function (list, task, direction, callback) {
+    callback = callback || function () {};
     direction = direction || 'up';
     if(direction === 'up') {
       var secondTask = list.tasks[list.tasks.indexOf(task)-1]
@@ -61,15 +62,25 @@ app.factory('tasks', ['$http', '$timeout', '$log', function ($http, $timeout, $l
         changePriorityBetween(list, task, secondTask);
       }
     }
+    callback(list);
   }
 
-  tasks.createTask = function (list) {
+  tasks.createTask = function (list, callback, beforeUpdate) {
+    callback = callback || function () {};
+    beforeUpdate = beforeUpdate || function () {};
+
+    beforeUpdate();
+
     list.tasks = list.tasks || [];
     if (list.newTask && list.newTask !== ""){
       $http.post(getTaskPath(list), {title: list.newTask})
       .success(function (data){
-        list.tasks.push(data);
-        list.newTask = "";
+        $timeout(function (){
+          list.tasks.push(data);
+          list.newTask = "";
+          console.log('createTask');
+          callback(list);
+        }, 500)
       })
       .error(function(data) {
         alert("List not found");
@@ -77,30 +88,29 @@ app.factory('tasks', ['$http', '$timeout', '$log', function ($http, $timeout, $l
     }
   };
 
-  tasks.destroyTask = function (list, task) {
-    task.loading = true;
+  tasks.destroyTask = function (list, task, callback) {
+    callback = callback || function () {};
+    // task.loading = true;
 
     $http.delete(getTaskPath(list, task))
     .success(function (data) {
-      task.loading = false;
-
       var taskIndex = list.tasks.indexOf(task);
       list.tasks.splice(taskIndex, 1);
+      callback(task);
     })
     .error(function (data) {
-      task.loading = false;
       alert("Task not found");
+      callback(task);
     })
   };
 
-  tasks.updateTask = function (list, task) {
-    task.loading = true;
+  tasks.updateTask = function (list, task, callback) {
+    callback = callback || function () {};
+    // task.loading = true;
 
     $http.put(getTaskPath(list, task), task)
     .success(function(data){
-      $timeout(function () {
-        task.loading = false;
-      }, 200);
+      callback(task);
     })
     .error(function(data) {
       task.loading = false;
@@ -108,41 +118,47 @@ app.factory('tasks', ['$http', '$timeout', '$log', function ($http, $timeout, $l
     });
   };
 
-  tasks.updateAll = function (list) {
+  tasks.updateAll = function (list, callback, beforeUpdate) {
+    callback = callback || function () {};
+    beforeUpdate = beforeUpdate || function () {};
     $timeout.cancel(debounce);
+
     debounce = $timeout(function () {
-      list.loading = true;
+      beforeUpdate();
+      // list.loading = true;
       var tasks = list.tasks.map(function (task){
         return {task: task};
       });
 
       $http.put(getTaskPath(list)+"all/update", tasks)
       .success(function(){
-        list.loading = false;
+        callback(list);
       })
       .error(function () {
         alert("Failed to update tasks.");
-        list.loading = false;
+        callback(list);
+        // list.loading = false;
       })
     }, 800);
   }
 
-  tasks.handleTaskKeyBoardControls = function (list, task) {
+  tasks.handleTaskKeyBoardControls = function (list, task, callback) {
     // enter          13
     // delete         46
     // up             38
     // down           40
     var key = event.keyCode;
+    console.log(key)
     if(key === 13) {
       task.editing = true;
     } else if (key === 46) {
-      tasks.destroyTask(list, task);
+      tasks.destroyTask(list, task, callback);
     } else if (key === 38) {
       tasks.moveTaskOneStep(list, task, 'up');
-      tasks.updateAll(list);
+      callback(list);
     } else if (key === 40) {
       tasks.moveTaskOneStep(list, task, 'down');
-      tasks.updateAll(list);
+      callback(list);
     }
   };
 

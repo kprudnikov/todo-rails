@@ -1,4 +1,4 @@
-app.controller('MainCtrl', function ($scope, $http, lists, tasks, Auth, $location) {
+app.controller('MainCtrl', function ($scope, $http, lists, tasks, Auth, $location, $timeout) {
 'use strict';
 
   Auth.currentUser().then(function(){
@@ -17,7 +17,43 @@ app.controller('MainCtrl', function ($scope, $http, lists, tasks, Auth, $locatio
     $scope.toggleEdit = function (resource) {
       resource.editing = resource.editing ? false : true;
     };
-    console.log('get all')
+
+    $scope.processLoadComplete = function (el) {
+      el.editing = false;
+      el.loading = true;
+      console.log('loading true')
+      return function (el) {
+        // emulate slow connection to display spinner
+        // $timeout(function(){
+          console.log('loading false')
+          el.loading = false;
+        // }, 500)
+      }
+    }
+
+    $scope.processNewTaskCreation = function(list){
+      if(list.newTask) {
+        console.log('processing start')
+        return $scope.processLoadComplete(list);
+      }
+    }
+
+    $scope.handleUpdateAllTasks = function (list) {
+    // a piece of iife-seaf-omg-wtf madness
+      $scope.updateAllTasks(list,
+        (function () {
+        list.editing = false;
+          return function () {
+              $timeout(function(){
+                list.loading = false;
+              }, 500);
+            }
+          })(),
+        function(){
+          list.loading = true;
+        });
+    }
+
     lists.getAll();
   }, function () {
     $location.path('/login');

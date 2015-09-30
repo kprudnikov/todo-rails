@@ -11,55 +11,63 @@ app.factory('lists', ['$http', '$timeout', function ($http, $timeout){
     return listsPath+list.id;
   }
 
-  lists.getAll = function () {
+  lists.getAll = function (callback) {
+    callback = callback || function () {};
+
     return $http.get(listsPath)
     .then(function(response){
-      angular.copy(response.data, lists.lists)
+      callback(response);
+      angular.copy(response.data, lists.lists);
     },
     function(response){
       alert('Something went wrong', response.status);
     });
   }
 
-  lists.update = function (list) {
+  lists.update = function (list, callback) {
+    callback = callback || function () {};
 
-    list.loading = true;
+    // list.loading = true;
+    // console.log(list)
 
     $http.put(getListPath(list), {title: list.title})
     .error(function (data, status){
       alert("Not found or access denied");
-      list.loading = false;
+      callback(list);
     })
     .success(function () {
-      $timeout(function(){
-        list.loading = false;
-      }, 100);
+      callback(list);
     });
 
     return false;
   }
 
-  lists.create = function () {
+  lists.create = function (callback) {
+    callback = callback || function () {};
+
     $http.post(listsPath)
     .success(function (data) {
-      data.editing = true;
       lists.lists.push(data);
+      callback(data);
     });
   }
 
-  lists.delete = function (list) {
-    list.loading = true;
+  lists.delete = function (list, callback) {
+    callback = callback || function () {};
+
+    // list.loading = true;
 
     $http.delete(getListPath(list))
-    .success(function(){
-      list.loading = false;
+    .success(function(data){
 
       var listIndex = lists.lists.indexOf(list)
       lists.lists.splice(listIndex, 1);
+      callback(list);
     })
     .error(function(){
-      list.loading = false;
+
       alert("Not found");
+      callback(list);
     });
   }
 
