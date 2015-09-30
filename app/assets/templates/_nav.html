@@ -1,0 +1,15 @@
+<!-- <small class="pull-left" ng-bind="user.email"></small> -->
+<!-- <div class="pull-right navbar" ng-controller="NavCtrl">
+  <ul class="nav navbar-form navbar-left">
+    <li ng-hide="signedIn()"><a href="#/login" class="btn btn-sm">Log In</a></li>
+    <li ng-hide="signedIn()"><a href="#/register" class="btn btn-sm">Register</a></li>
+    <li ng-show="signedIn()"><a ng-click="logout()" class="btn btn-sm">Log Out</a></li>
+  </ul>
+</div> -->
+<!-- <div class="pull-left">{{user.email}}</div> -->
+<nav class="text-right" ng-controller="NavCtrl">
+    <small class="pull-left">{{user.email}}</small>
+    <span ng-hide="signedIn()"><a href="#/login" class="btn btn-sm btn-default">Log In</a></span>
+    <span ng-hide="signedIn()"><a href="#/register" class="btn btn-sm btn-default">Register</a></span>
+    <span ng-show="signedIn()"><a ng-click="logout()" class="btn btn-sm btn-warning">Log Out</a></span>
+</nav>

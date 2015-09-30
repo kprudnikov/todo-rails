@@ -3,6 +3,7 @@ module Api
 
     class TasksController < ApplicationController
 
+      before_action :authenticate_user!
       before_action :check_access, only: [:update, :destroy]
       before_action :check_list_access, only: [:create, :update_all]
 

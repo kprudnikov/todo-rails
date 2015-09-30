@@ -17,7 +17,7 @@ app.factory('lists', ['$http', '$timeout', function ($http, $timeout){
       angular.copy(response.data, lists.lists)
     },
     function(response){
-      alert(response.status);
+      alert('Something went wrong', response.status);
     });
   }
 

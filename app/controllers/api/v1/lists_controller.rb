@@ -2,7 +2,8 @@ module Api
   module V1
 
     class ListsController < ApplicationController
-
+      # before_action :check_authentication
+      before_action :authenticate_user!
       before_action :check_access, only: [:update, :destroy]
 
       def index
@@ -38,6 +39,15 @@ module Api
       end
 
 private
+
+  # def check_authentication
+  #   unless current_user
+  #     respond_to do |f|
+  #       f.json {render(json: {}, status: :unauthorized)}
+  #     end
+  #   end
+  #   return
+  # end
 
   def check_access
     unless current_user.lists.exists?(params[:id])

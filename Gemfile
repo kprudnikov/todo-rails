@@ -17,9 +17,14 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'angularjs-rails'
 gem 'angular-rails-templates'
 
+# gem 'devise_token_auth'
+# gem 'angular_rails_csrf'
+
 gem 'devise'
 gem 'angular_rails_csrf'
-
+source "https://rails-assets.org" do
+  gem "rails-assets-angular-devise"
+end
 
 # gem "therubyracer"
 # gem "less-rails"

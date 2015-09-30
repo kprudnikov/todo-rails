@@ -1,3 +1,5 @@
+<div ng-include="'_nav.html'" class="clearfix" style="margin-bottom: 20px;"></div>
+
 <div class="list" ng-repeat="list in lists">
   <div class="header bg-primary clearfix">
     <div class="row">
@@ -23,7 +25,7 @@
   </div>
 
   <div class="well">
-    <button class="btn btn-link" ng-click="updateAllTasks(list)">Update all</button>
+    <!-- <button class="btn btn-link" ng-click="updateAllTasks(list)">Update all</button> -->
     <div class="new-task">
       <form class="input-group" ng-submit="createTask(list)">
         <div class="input-group-addon">
@@ -41,7 +43,7 @@
     <ul class="tasks-container">
       <li ng-repeat="task in list.tasks" id="task-{{task.id}}">
         <!-- {{task.id}} - {{task.priority}} -->
-        <form class="input-group" ng-submit="updateTask(list, task)">
+        <form class="input-group" ng-submit="updateTask(list, task); toggleEdit(task)">
           <div class="input-group-addon">
             <input type="checkbox" name="task-complete" ng-checked="task.complete" ng-change="updateTask(list, task)" ng-model="task.complete">
           </div>
