@@ -1,16 +1,24 @@
-<div class="page-header">
-  <h1>Register</h1>
-</div>
+<center class="col-sm-6 col-sm-offset-3 col-xs-12">
 
-<form ng-submit="register()">
-  <div class="input-group">
-    <input type="email" class="form-control" placeholder="Email" ng-model="user.email">
+  <div class="page-header">
+    <h1>Register</h1>
   </div>
-<!--   <div class="input-group">
-    <input type="text" class="form-control" placeholder="Username" ng-model="user.username">
-  </div> -->
-  <div class="input-group">
-    <input type="password" class="form-control" placeholder="Password" ng-model="user.password">
-  </div>
-  <input type="submit" class="btn btn-default" value="Register">
-</form>
+
+  <form ng-submit="register()">
+    <div class="form-group">
+      <label for="email" class="sr-only">Email</label>
+      <input type="email" class="form-control input-lg" placeholder="Email" ng-model="user.email">
+    </div>
+    <div class="form-group">
+      <label for="password" class="sr-only">Password</label>
+      <input type="password" class="form-control input-lg" placeholder="Password" ng-model="user.password">
+    </div>
+    <div class="form-group">
+      <label for="password" class="sr-only">Password confirmation</label>
+      <input type="password" class="form-control input-lg" placeholder="Password confirmation" ng-model="user.passwordConfirmation">
+    </div>
+    <input type="submit" class="btn btn-lg btn-primary" value="Register">
+    <a href="#/login" class="btn btn-sm btn-default auth-secondary-button">Login</a>
+  </form>
+
+</center>

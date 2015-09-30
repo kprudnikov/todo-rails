@@ -35,6 +35,10 @@ body {
       padding: 2px 0;
       cursor: pointer;
       line-height: 40px;
+
+      .h3 {
+        word-break: break-word;
+      }
     }
 
     .title-container, .title-edit{
@@ -87,6 +91,13 @@ body {
     }
   }
 }
+
+.auth-secondary-button {
+  position: absolute;
+  left: 15px;
+  bottom: 0;
+}
+
 
 // Utilities ->
 

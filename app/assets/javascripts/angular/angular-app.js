@@ -17,19 +17,3 @@ app.config(['$routeProvider', function ($routeProvider) {
     redirectTo: "/login"
   })
 }]);
-
-// app.run(function($rootScope, Auth){
-//   console.log('RUN');
-//   console.log(Auth.isAuthenticated());
-//   Auth.login({
-//     email: 'admin@admin.com',
-//     password: "qwer1234"
-//   }).then( function () {
-//     console.log('Log in')
-//   }).then(function(){
-//     console.log('recovered session')
-//   }, function (e){
-//     console.log(e.status)
-//     console.log('error')
-//   })
-// })

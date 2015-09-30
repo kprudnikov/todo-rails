@@ -1,14 +1,5 @@
 app.controller('MainCtrl', function ($scope, $http, lists, tasks, Auth, $location) {
 'use strict';
-  console.log("MainCtrl")
-
-  console.info("$scope.user");
-  console.info($scope.user);
-
-  $scope.$on('devise:logout', function (e, user){
-    console.log("Clear out scope");
-    $scope.lists = [];
-  });
 
   Auth.currentUser().then(function(){
     $scope.lists = lists.lists;

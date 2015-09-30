@@ -16,14 +16,12 @@ app.factory('tasks', ['$http', '$timeout', '$log', function ($http, $timeout, $l
 
   function swapPriority (first, second) {
     var tempPriority = first.priority;
-    console.log("priorities", first.priority, second.priority)
     first.priority = second.priority;
     second.priority = tempPriority;
   }
 
   function swapTasks (list, firstIndex, secondIndex) {
     var temp = list.tasks[firstIndex];
-    console.log("index", firstIndex, secondIndex)
 
     list.tasks[firstIndex] = list.tasks[secondIndex];
     list.tasks[secondIndex] = temp;
@@ -52,7 +50,6 @@ app.factory('tasks', ['$http', '$timeout', '$log', function ($http, $timeout, $l
 
   tasks.moveTaskOneStep = function (list, task, direction) {
     direction = direction || 'up';
-    console.log(task.id);
     if(direction === 'up') {
       var secondTask = list.tasks[list.tasks.indexOf(task)-1]
       if (secondTask) {
@@ -142,11 +139,9 @@ app.factory('tasks', ['$http', '$timeout', '$log', function ($http, $timeout, $l
       tasks.destroyTask(list, task);
     } else if (key === 38) {
       tasks.moveTaskOneStep(list, task, 'up');
-      console.log('will update up');
       tasks.updateAll(list);
     } else if (key === 40) {
       tasks.moveTaskOneStep(list, task, 'down');
-      console.log('will update down');
       tasks.updateAll(list);
     }
   };
